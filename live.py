@@ -91,8 +91,17 @@ def run_bot(symbol="APTUSDT", tp=0.02, sl=0.02):
 
             live_data = df.tail(1).copy()
 
-            if live_data.empty or live_data.shape[0] < 1:
+            # Boş veri, eksik sütun, veya sütun değeri boşsa uyarı ver ve geç
+            if live_data.empty:
                 send_telegram("⚠️ Uyarı: Live data boş. Atlanıyor.")
+                time.sleep(60)
+                continue
+            if 'close' not in live_data.columns:
+                send_telegram("⚠️ Uyarı: 'close' sütunu eksik. Atlanıyor.")
+                time.sleep(60)
+                continue
+            if live_data['close'].shape[0] == 0:
+                send_telegram("⚠️ Uyarı: 'close' değeri boş. Atlanıyor.")
                 time.sleep(60)
                 continue
 
@@ -129,6 +138,7 @@ def run_bot(symbol="APTUSDT", tp=0.02, sl=0.02):
             send_telegram(f"❌ HATA: {str(e)}")
 
         time.sleep(60)
+
     
 # === BAŞLATICI ===
 if __name__ == "__main__":
