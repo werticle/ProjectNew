@@ -69,8 +69,8 @@ def add_indicators(df):
 # === ANA BOT ===
 def run_bot(symbol="APTUSDT", tp=0.02, sl=0.02):
     try:
-        model = joblib.load("project-x-bot/model.pkl")
-        scaler = joblib.load("project-x-bot/scaler.pkl")
+        model = joblib.load("model.pkl")
+        scaler = joblib.load("scaler.pkl")
         features = scaler.feature_names_in_
     except Exception as e:
         send_telegram(f"❌ Model/Scaler yüklenemedi: {str(e)}")
